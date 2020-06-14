@@ -6,29 +6,30 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
-} from 'typeorm';
-import Category from './Category';
+} from "typeorm";
 
-@Entity('transactions')
+import Category from "./Category";
+
+@Entity("transactions")
 class Transaction {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
   title: string;
 
   @Column()
-  type: 'income' | 'outcome';
+  type: "income" | "outcome";
 
-  @Column('decimal')
+  @Column("decimal")
   value: number;
 
-  @ManyToOne(() => Category)
-  @JoinColumn({ name: 'id' })
-  category: Category;
-
-  @Column()
+  @Column("varchar")
   category_id: string;
+
+  @ManyToOne(() => Category, category => category.transaction, { eager: true })
+  @JoinColumn({ name: "category_id" })
+  category: Category;
 
   @CreateDateColumn()
   created_at: Date;
